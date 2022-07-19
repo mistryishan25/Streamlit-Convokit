@@ -1,0 +1,5 @@
+.vscode
+__pycache__
+test.py
+rough.py
+data/
