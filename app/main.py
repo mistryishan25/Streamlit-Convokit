@@ -1,13 +1,12 @@
 import streamlit as st
 import pandas as pd
 from convokit import Corpus
-from utils import print_resource_section, display_node_box
+from utils import print_resource_section, display_node_box, user_info
 
 
 @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def load_data(ROOT_DIR):
     corpus = Corpus(ROOT_DIR)
-    # st.write(corpus.print_summary_stats())
     return corpus
 
 
@@ -28,31 +27,19 @@ def load_data(ROOT_DIR):
 
 # Upload the updated corpus to the cloud
 
-def show_sidebar():
-    # Using object notation
-    add_selectbox = st.sidebar.selectbox(
-        " Who is this? ",
-        ("User1","User2","User3")
-    )
-
-    # Using "with" notation
-    with st.sidebar:
-        add_radio = st.radio(
-            "Choose a shipping method",
-            ("Standard (5-15 days)", "Express (2-5 days)")
-        )
-
 
 def main():
+    
+    #Change later with real values
+    if "user_list_dict" not in st.session_state:
+        st.session_state["user_list_dict"] = {"Ron": ["9c716m", "9c8amk", "9ca0yk", "9cfz10", "9crqp2", "9d07z8", "9dbjxa", "9dhcnh", "9dhek8"],"Hermoine":[1,2,3,4,5,6], "Harry" : ["Lol"]}
+    #Print the form and get the list of conv-ids
+    user_conv_list = user_info(st.session_state["user_list_dict"])
+    user_conv_list
     corpus = load_data("data")
-    if corpus is not None:
-        "Corpus is loaded"
-        # list = corpus.random_conversation()
-        # list._utterance_ids
-    else:
-        "corpus is none"
-    # show_sidebar()
+    assert corpus is not None
 
 
 if __name__ == "__main__":
     main()
+ 

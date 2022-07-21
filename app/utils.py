@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 
+
 def display_node_box(file_df, update_on_submit):
     """
     Takes in the input dataframe and displays the node container
@@ -23,7 +24,13 @@ def display_node_box(file_df, update_on_submit):
         sub1 = st.form_submit_button(
             'Submit 1', on_click=update_on_submit(keep_node, node))
 
+# -----------------------------------------------------------------------
+
+
 def print_resource_section() -> None:
+    """
+
+    """
     st.write('''# Resource section''')
     with st.expander("Click to expand info about the sentence categories"):
         st.write(
@@ -82,3 +89,26 @@ def print_resource_section() -> None:
           #### Defendin    
           '''
         )
+
+
+# ----------------------------------------------------------------------
+
+
+def user_info(user_list_dict)->list:
+    """
+    Prints out the form and ask for the user.
+        Arguments : 
+            user_list_dict : The list of users you have in mind
+        Returns :
+            A list of conversations 
+    """
+    with st.form("User_identity", key="which_user"):
+        users = user_list_dict.keys()
+        st.write("### Who would this wizard be?")
+        selected_user = st.selectbox("Reveal yourself", users)
+        user_submit = st.form_submit_button("Submit")
+        if user_submit:
+            # st.write(user_list_dict[selected_user])
+            return user_list_dict[selected_user]
+
+
