@@ -1,45 +1,52 @@
 import streamlit as st
+import copy
 import pandas as pd
 from convokit import Corpus
-from utils import print_resource_section, display_node_box, user_info
+from time import time
+from utils import user_info, get_user_corpus
+
+# Each of them will be having their own data folder where there is their down corpus that they are dealing with.
+
+# ------------------------LOADING THE DATA------------------------------------
 
 
 @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def load_data(ROOT_DIR):
+    start = time()
     corpus = Corpus(ROOT_DIR)
+    total = time() - start
+    st.write("Time elapsed", total)
     return corpus
 
 
-# -------------Upload option-------------
-# Do we get the entire folder?
+# mains = load_data("data")
+# ------------------CALLBAKCS----------------------------------------------
+
+# def user_button_callback(selected_user):
+#     st.session_state["current_user"] = selected_user
 
 
-# -------------Session States------------------------
-# keep the entire corpus in the session state
+# ---------------------SESSION STATE VARIABLES-------------------------------------
 
-# --------User selection from side bar---------------
+if "current_user" not in st.session_state:
+    st.session_state["current_user"] = " "
 
-# Get the entire corpus from an upload
+    st.session_state["user_corpus"] = load_data("data")
 
-# filter out the conversations based on the person
 
-# Labelling - directly append to the meta data
-
-# Upload the updated corpus to the cloud
-
+# ----------------------------MAIN-------------------------------------------
 
 def main():
-    
-    #Change later with real values
-    if "user_list_dict" not in st.session_state:
-        st.session_state["user_list_dict"] = {"Ron": ["9c716m", "9c8amk", "9ca0yk", "9cfz10", "9crqp2", "9d07z8", "9dbjxa", "9dhcnh", "9dhek8"],"Hermoine":[1,2,3,4,5,6], "Harry" : ["Lol"]}
-    #Print the form and get the list of conv-ids
-    user_conv_list = user_info(st.session_state["user_list_dict"])
-    user_conv_list
-    corpus = load_data("data")
-    assert corpus is not None
+
+    with st.form("User_identity"):
+        st.write("### Who would this wizard be?")
+        selected_user = st.selectbox(
+            "Reveal yourself", ["Ron", "Hermoine", "Snape", "Neville", "Harry"])
+        user_submit = st.form_submit_button("Submit")
+        st.session_state["current_user"] = selected_user
+
+    st.write(st.session_state["current_user"])
 
 
 if __name__ == "__main__":
     main()
- 

@@ -1,15 +1,16 @@
 import streamlit as st
 import pandas as pd
+import convokit
+from convokit import Corpus
 
 
 def display_node_box(file_df, update_on_submit):
     """
-    Takes in the input dataframe and displays the node container
+    
     """
 
-    with st.form("comment", clear_on_submit=True):
-        st.write("Comment #"+str(st.session_state['index_utterances']))
-        st.info(file_df.iloc[st.session_state["index_utterances"]][2])
+    with st.form("comment"):
+        st.write("### Comment #"+str(st.session_state['index_utterances']))
         node = st.selectbox('Type', ['Agreement',
                                      'Announcement',
                                      'Answer',
@@ -22,7 +23,7 @@ def display_node_box(file_df, update_on_submit):
         keep_node = st.checkbox(
             'Should we exclude this one?', key="Keep_node")
         sub1 = st.form_submit_button(
-            'Submit 1', on_click=update_on_submit(keep_node, node))
+            'Submit 1')
 
 # -----------------------------------------------------------------------
 
@@ -94,7 +95,7 @@ def print_resource_section() -> None:
 # ----------------------------------------------------------------------
 
 
-def user_info(user_list_dict)->list:
+def user_info(main_corpus,user_list_dict):
     """
     Prints out the form and ask for the user.
         Arguments : 
@@ -102,13 +103,23 @@ def user_info(user_list_dict)->list:
         Returns :
             A list of conversations 
     """
-    with st.form("User_identity", key="which_user"):
+
+    def user_button_pressed(user_name, main_corpus):
+        st.session_state["current_user"] = user_name
+        st.session_state["user_corpus"] = get_user_corpus(main_corpus,st.session_state["user_list_dict"][st.session_state["current_user"]])
+
+    with st.form("User_identity"):
         users = user_list_dict.keys()
         st.write("### Who would this wizard be?")
         selected_user = st.selectbox("Reveal yourself", users)
-        user_submit = st.form_submit_button("Submit")
-        if user_submit:
-            # st.write(user_list_dict[selected_user])
-            return user_list_dict[selected_user]
+        user_submit = st.form_submit_button("Submit", on_click=user_button_pressed, args=[selected_user, main_corpus])
+        # if user_submit:
+        #     return user_list_dict[st.session_state["current_user"]]
 
+
+# main = Corpus("data")
+
+def get_user_corpus(main_corpus:convokit.Corpus, user_list:dict)->convokit.Corpus:
+  user_corpus = main_corpus.filter_conversations_by(lambda conv: True if conv.id in user_list else False)
+  return user_corpus
 
