@@ -45,7 +45,7 @@ def main():
         user_submit = st.form_submit_button("Submit")
         st.session_state["current_user"] = selected_user
 
-    st.write(st.session_state["current_user"])
+    st.success("Welcome to Hogwarts    "+st.session_state["current_user"])
 
 
 if __name__ == "__main__":
