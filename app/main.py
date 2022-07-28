@@ -29,7 +29,7 @@ def load_data(ROOT_DIR):
 def user_submit_callback(selected_user):
     st.session_state["current_user"] = selected_user
     if st.session_state["current_user"] != None:
-        st.success("Welcome to Hogwarts explain their task here before going on further!!    " +
+        st.success("Welcome to Hogwarts explain their task here before going on further!! Showed only once    " +
                    str(st.session_state["current_user"]))
 
 
