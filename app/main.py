@@ -77,8 +77,8 @@ def main():
                 button = st.button("Read Next")
                 if button:
                     print_resource_section_edges()
-                reader_consent = st.button(
-                    "I've done my homework Hagrid", on_click=resource_button_callback)
+                    reader_consent = st.button(
+                        "I've done my homework Hagrid", on_click=resource_button_callback)
 
         else:
             st.write("Work in progress")
