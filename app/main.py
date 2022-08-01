@@ -3,8 +3,7 @@ import copy
 import pandas as pd
 from convokit import Corpus
 from time import time
-from utils import display_node_box
-from utils import print_resource_section
+from utils import display_node_box, print_resource_section_edges, print_resource_section_nodes
 from utils import user_info, get_user_corpus
 
 # Each of them will be having their own data folder where there is their down corpus that they are dealing with.
@@ -74,12 +73,16 @@ def main():
         # should come up everytime a new conversation comes up
         if st.session_state["reader_consent"] == False:
             with st.container():
-                print_resource_section()
+                print_resource_section_nodes()
+                button = st.button("Read Next")
+                if button:
+                    print_resource_section_edges()
                 reader_consent = st.button(
                     "I've done my homework Hagrid", on_click=resource_button_callback)
 
         else:
-            display_node_box()
+            st.write("Work in progress")
+            # display_node_box()
         # display_node_box()
 
 
