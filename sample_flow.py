@@ -1,6 +1,8 @@
 import streamlit as st
 from time import time
 from convokit import Corpus
+
+from app.utils import node_box_without_form
 # from utils import display_node_box
 
 
@@ -39,10 +41,7 @@ if st.session_state["conv_counter"] != len(static_conv_list):
 if "utt_counter" not in st.session_state:
     # Initial counter to zero
     st.session_state["utt_counter"] = 0
-    # st.snow()
 
-
-#
 st.session_state["utt_list"] = st.session_state["current_conv"].get_utterance_ids()
 
 
@@ -53,7 +52,7 @@ st.session_state["current_utt"] = st.session_state["current_conv"].get_utterance
 if "progress_utt" not in st.session_state:
     st.session_state["progress_utt"] = 0
 
-st.warning(st.session_state["current_utt"].get_conversation().meta["title"])
+# st.warning(st.session_state["current_utt"].get_conversation().meta["title"])
 
 # -----------------------------------TESTING CALLBACKS -----------------------
 
@@ -66,38 +65,46 @@ def inc_conv():
         st.write("Conv_counter", st.session_state["conv_counter"])
 
 
-def inc_utt():
+# def inc_utt():
 
-    if st.session_state["utt_counter"] == len(st.session_state["utt_list"])-1:
-        st.session_state["utt_counter"] = 0
-        st.session_state["conv_counter"] += 1
-    else:
-        st.session_state["utt_counter"] += 1
-        st.write("Utt_total", len(st.session_state["utt_list"]))
+#     if st.session_state["utt_counter"] == len(st.session_state["utt_list"])-1:
+#         st.session_state["utt_counter"] = 0
+#         st.session_state["conv_counter"] += 1
+#     else:
+#         st.session_state["utt_counter"] += 1
+#         st.write("Utt_total", len(st.session_state["utt_list"]))
+
 
 # --------------------------------MAIN--------------------------------
 
 def main():
-    st.write("#### Utterance Progress")
-    utt_bar = st.progress(0.0)
-    utt_bar.progress((st.session_state["utt_counter"])/(
-        len(st.session_state["utt_list"])))
+    st.write("#### Conversation progress")
+    conv_bar = st.progress(0)
+    conv_bar.progress(2*st.session_state["conv_counter"])
 
-    st.write("con_counter", st.session_state["conv_counter"])
+    # st.write("con_counter", st.session_state["conv_counter"])
     if st.session_state["conv_counter"] != len(static_conv_list):
-        st.write(st.session_state["current_conv"].id)
+        # st.write(st.session_state["current_conv"].id)
 
         if st.session_state["utt_counter"] != len(st.session_state["utt_list"]):
-            "utt_counter", st.session_state["utt_counter"]
+            # "utt_counter", st.session_state["utt_counter"]
+            # "utt_id",st.session_state["current_utt"].id
 
-            utt_button = st.button("Next Utt", on_click=inc_utt)
+            # display_node_box(st.session_state["current_utt"])
+            node_box_without_form()
 
         else:
             conv_button = st.button("Next Conversation", on_click=inc_conv)
 
-        st.write("#### Conversation progress")
-        conv_bar = st.progress(0)
-        conv_bar.progress(2*st.session_state["conv_counter"])
+    st.write("#### Utterance Progress")
+    utt_bar = st.progress(0.0)
+    utt_bar.progress(
+        (st.session_state["utt_counter"])/(len(st.session_state["utt_list"])))
+
+    if st.session_state["utt_counter"] != 0:
+        st.write(st.session_state["current_conv"].get_utterance(
+            st.session_state["utt_list"][st.session_state["utt_counter"]-1]).meta)
+
 
     # progress for each cconversation
 if __name__ == "__main__":
