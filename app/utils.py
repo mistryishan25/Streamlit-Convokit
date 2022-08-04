@@ -5,30 +5,45 @@ import convokit
 from convokit import Corpus
 
 
-def display_node_box(utt):
+def update_meta(node, edge, keep_node):
+    # add node to the meta
+    st.session_state["current_utt"].meta["node_label"] = node
+    # Update the edge to the meta
+    st.session_state["current_utt"].meta["edge_label"] = edge
+    # update the keep node info
+    st.session_state["current_utt"].meta["keep_node"] = keep_node
 
-    def progress_click(node, edge, keep_it):
+    # st.write(st.session_state["current_utt"].meta)
 
-        # add node to the meta
-        st.session_state["current_utt"].add_meta("node_label", node)
+    if st.session_state["utt_counter"] == len(st.session_state["utt_list"])-1:
+        st.session_state["utt_counter"] = 0
+        st.session_state["conv_counter"] += 1
+    else:
+        st.session_state["utt_counter"] += 1
 
-        # Update the edge to the meta
-        st.session_state["current_utt"].add_meta("edge_label", edge)
+    pass
 
-        # update the keep node info
-        st.session_state["current_utt"].add_meta("keep_node", keep_it)
-    """
-    Takes in the utterance object and displays information about it.
-    """
 
-    with st.form(key=str(st.session_state["current_utt"].id)):
+def node_box_without_form():
+    col1,col2,col3 =st.columns(3)
+
+    with col1:
         st.write("#### Previous Comment")
-        if st.session_state["utt_counter"] == 0:
-            st.success("This is the first comment on the conversation")
-        else:
-            st.success(st.session_state["current_utt"].text)
+        with st.expander("Click to expand"):
+            if st.session_state["utt_counter"] == 0:
+                st.success("This is the first comment on the conversation")
+            else:
+                st.success(st.session_state["current_conv"].get_utterance(
+                    st.session_state["utt_list"][st.session_state["utt_counter"]-1]).text)
+        
+    with col2:
         st.write("#### Current Comment")
-        st.warning(str(utt.get_conversation().meta["title"]))
+        with st.expander("Click to expand"):
+            st.warning(st.session_state["current_utt"].text)
+
+
+    with col3:
+        st.write("#### Options")
         node = st.selectbox("What do you think is the current comment type? ", ['Agreement',
                                                                                 'Announcement',
                                                                                 'Answer',
@@ -39,9 +54,9 @@ def display_node_box(utt):
                                                                                 'Negative Reaction',
                                                                                 'Question',
                                                                                 'Other',
-                                                                                None], key="Node_1", index=10)
+                                                                                None], key="Node_1",)
 
-        if st.session_state["utt_counter"]!= 0:
+        if st.session_state["utt_counter"] != 0:
             st.write("#### Relation b/w them")
             edge = st.selectbox("What kind of realtionship exists between these sentenes", ['Asking',
                                                                                             'Informing',
@@ -59,21 +74,87 @@ def display_node_box(utt):
                                                                                             'Challenging',
                                                                                             'Attacking',
                                                                                             'Defending',
-                                                                                            None], index=16)
+                                                                                            None], key="Edge_1 ")
         else:
             edge = None
+        keep_node = st.checkbox('Should we exclude this one?', key="Keep_node")
+
+        submit_box = st.button("Submit", on_click=update_meta, args=[
+                               node, edge, keep_node])
 
 
+def display_node_box(utt):
+
+    def progress_click(node, edge, keep_node):
+
+        # add node to the meta
+        st.session_state["current_utt"].meta["node_label"] = node
+        # Update the edge to the meta
+        st.session_state["current_utt"].meta["edge_label"] = edge
+        # update the keep node info
+        st.session_state["current_utt"].meta["keep_node"] = keep_node
+
+        st.write(st.session_state["current_utt"].meta)
+
+        if st.session_state["utt_counter"] == len(st.session_state["utt_list"])-1:
+            st.session_state["utt_counter"] = 0
+            st.session_state["conv_counter"] += 1
+        else:
+            st.session_state["utt_counter"] += 1
+
+    """
+    Takes in the utterance object and displays information about it.
+    """
+
+    with st.form(key=str(st.session_state["current_utt"].id)):
+        st.write("#### Previous Comment")
+        if st.session_state["utt_counter"] == 0:
+            st.success("This is the first comment on the conversation")
+        else:
+            st.success(st.session_state["current_conv"].get_utterance(
+                st.session_state["utt_list"][st.session_state["utt_counter"]-1]).text)
+        st.write("#### Current Comment")
+        st.warning(str(utt.text))
+        node = st.selectbox("What do you think is the current comment type? ", ['Agreement',
+                                                                                'Announcement',
+                                                                                'Answer',
+                                                                                'Appreciation',
+                                                                                'Disagreement',
+                                                                                'Elaboration',
+                                                                                'Humour',
+                                                                                'Negative Reaction',
+                                                                                'Question',
+                                                                                'Other',
+                                                                                None], key="Node_1",)
+        st.write(node)
+
+        if st.session_state["utt_counter"] != 0:
+            st.write("#### Relation b/w them")
+            edge = st.selectbox("What kind of realtionship exists between these sentenes", ['Asking',
+                                                                                            'Informing',
+                                                                                            'Asserting',
+                                                                                            'Proposing',
+                                                                                            'Summarizing',
+                                                                                            'Checking',
+                                                                                            'Building',
+                                                                                            'Including',
+                                                                                            'Excluding',
+                                                                                            'Self-promotion',
+                                                                                            'Supporting',
+                                                                                            'Disagreeing',
+                                                                                            'Avoiding',
+                                                                                            'Challenging',
+                                                                                            'Attacking',
+                                                                                            'Defending',
+                                                                                            None], key="Edge_1 ")
+        else:
+            edge = None
+        st.write(edge)
         keep_node = st.checkbox(
-                'Should we exclude this one?', key="Keep_node")
+            'Should we exclude this one?', key="Keep_node")
+
         sub1 = st.form_submit_button('Submit 1', on_click=progress_click, args=[
                                      node, edge, keep_node])
-
-    # on the last utterance
-    if st.session_state["utt_counter"] == len(st.session_state["current_conv"].get_utterance_ids())-1:
-        pass
-        # Show the button to move on to the next conversation
-        # -----------------------------------------------------------------------
 
 
 def print_resource_section_nodes() -> None:
@@ -177,9 +258,6 @@ def print_resource_section_edges():
         )
 
 
-# ----------------------------------------------------------------------
-
-
 def user_info(main_corpus, user_list_dict):
     """
     Prints out the form and ask for the user.
@@ -200,16 +278,9 @@ def user_info(main_corpus, user_list_dict):
         selected_user = st.selectbox("Reveal yourself", users)
         user_submit = st.form_submit_button(
             "Submit", on_click=user_button_pressed, args=[selected_user, main_corpus])
-        # if user_submit:
-        #     return user_list_dict[st.session_state["current_user"]]
 
-
-# main = Corpus("data")
 
 def get_user_corpus(main_corpus: convokit.Corpus, user_list: dict) -> convokit.Corpus:
     user_corpus = main_corpus.filter_conversations_by(
         lambda conv: True if conv.id in user_list else False)
     return user_corpus
-
-
-# Do tabs for tree structure?
