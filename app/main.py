@@ -5,6 +5,7 @@ from convokit import Corpus
 from time import time
 from utils import print_resource_section_edges, print_resource_section_nodes, node_box_without_form
 from utils import user_info, get_user_corpus
+from users import *
 
 # Each of them will be having their own data folder where there is their down corpus that they are dealing with.
 
@@ -18,6 +19,9 @@ def load_data(ROOT_DIR):
     total = time() - start
     st.write("Time elapsed", total)
     return corpus
+
+
+# 
 
 
 # ------------------CALLBAKCS----------------------------------------------
@@ -51,7 +55,9 @@ if "current_user" not in st.session_state:
 
 
 # The corpus that will update itself through all the changes
-if "user_corpus" not in st.session_state:
+    # read the json file to get the list of allowed convs
+
+# Make changes to load only those that are presnt in the corpus based on the person
     st.session_state["user_corpus"] = load_data("data")
 
 # This is the list of all the ids
@@ -93,7 +99,7 @@ def main():
     if st.session_state["current_user"] == None:
         with st.container():
             st.write("### Who would this wizard be?")
-            # change the list here when needed
+            # change the list here when needed - using the keys to
             users = ["Ron", "Hermoine", "Neville",
                      "Harry", "Professor Snape", None]
             default_idx = users.index(None)
@@ -124,7 +130,7 @@ def main():
             conv_bar = st.progress(0)
             conv_bar.progress(2*st.session_state["conv_counter"])
 
-            # st.write("con_counter", st.session_state["conv_counter"])
+           
             if st.session_state["conv_counter"] != len(static_conv_list):
                 # st.write(st.session_state["current_conv"].id)
 
@@ -138,6 +144,10 @@ def main():
                 else:
                     conv_button = st.button(
                         "Next Conversation", on_click=inc_conv)
+
+                # utterance variable
+                # appened the current conv to a new json file
+                # download button
 
             st.write("#### Utterance Progress")
             utt_bar = st.progress(0.0)
