@@ -1,11 +1,12 @@
+from importlib.resources import path
 import streamlit as st
 import copy
 import pandas as pd
 from convokit import Corpus
+import json
 from time import time
-from utils import print_resource_section_edges, print_resource_section_nodes, node_box_without_form
-from utils import user_info, get_user_corpus
-from users import *
+from utils import print_resource_section_edges, print_resource_section_nodes, node_box_without_form, user_info
+# from users import *
 
 # Each of them will be having their own data folder where there is their down corpus that they are dealing with.
 
@@ -19,9 +20,6 @@ def load_data(ROOT_DIR):
     total = time() - start
     st.write("Time elapsed", total)
     return corpus
-
-
-# 
 
 
 # ------------------CALLBAKCS----------------------------------------------
@@ -43,6 +41,7 @@ def inc_conv():
     else:
         st.session_state["conv_counter"] += 1
         st.write("Conv_counter", st.session_state["conv_counter"])
+
 
 
 # ---------------------SESSION STATE VARIABLES-------------------------------------
@@ -130,7 +129,6 @@ def main():
             conv_bar = st.progress(0)
             conv_bar.progress(2*st.session_state["conv_counter"])
 
-           
             if st.session_state["conv_counter"] != len(static_conv_list):
                 # st.write(st.session_state["current_conv"].id)
 
@@ -145,7 +143,9 @@ def main():
                     conv_button = st.button(
                         "Next Conversation", on_click=inc_conv)
 
-                # utterance variable
+                # find the list of all the utt
+                st.session_state["user_corpus"].dump(path="data", overwrite_existing_corpus=True)
+
                 # appened the current conv to a new json file
                 # download button
 
