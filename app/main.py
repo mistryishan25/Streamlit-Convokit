@@ -43,9 +43,14 @@ def inc_conv():
         st.write("Conv_counter", st.session_state["conv_counter"])
 
 
+def exit_callback():
+    #chnage the parameter : overwrite_exisiting_corpus to true in the end
+    # st.session_state["user_corpus"].dump(name="test_modified",
+    #                                      base_path="test")
+    st.success("The data has been downloaded. You can close the app now!")
+
 
 # ---------------------SESSION STATE VARIABLES-------------------------------------
-
 
 if "current_user" not in st.session_state:
     st.session_state["current_user"] = None
@@ -139,15 +144,8 @@ def main():
                     # display_node_box(st.session_state["current_utt"])
                     node_box_without_form()
 
-                else:
-                    conv_button = st.button(
-                        "Next Conversation", on_click=inc_conv)
-
-                # find the list of all the utt
-                st.session_state["user_corpus"].dump(path="data", overwrite_existing_corpus=True)
-
-                # appened the current conv to a new json file
                 # download button
+                st.button("Exit", on_click=exit_callback)
 
             st.write("#### Utterance Progress")
             utt_bar = st.progress(0.0)
