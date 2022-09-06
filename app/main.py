@@ -120,19 +120,24 @@ def main():
         # ---------------------RESOURCE SECTION--------------------------------------
     if st.session_state["current_user"] != None:
         # should come up everytime a new conversation comes up
-        if st.session_state["reader_consent"] == False:
-            with st.container():
-                print_resource_section_nodes()
-                button = st.button("Read Next")
-                if button:
-                    print_resource_section_edges()
-                    reader_consent = st.button(
-                        "I've done my homework Hagrid", on_click=resource_button_callback)
+        # if st.session_state["reader_consent"] == False:
+        #     with st.container():
+        #         print_resource_section_nodes()
+        #         button = st.button("Read Next")
+        #         if button:
+        #             print_resource_section_edges()
+        #             reader_consent = st.button(
+        #                 "I've done my homework Hagrid", on_click=resource_button_callback)
+        
 
-        else:
-            st.write("#### Conversation progress")
-            conv_bar = st.progress(0)
-            conv_bar.progress(2*st.session_state["conv_counter"])
+        # else:
+        
+            st.write("#### Utterance Progress")
+            utt_bar = st.progress(0.0)
+            utt_bar.progress(
+                (st.session_state["utt_counter"])/(len(st.session_state["utt_list"])))
+
+           
 
             if st.session_state["conv_counter"] != len(static_conv_list):
                 # st.write(st.session_state["current_conv"].id)
@@ -147,10 +152,9 @@ def main():
                 # download button
                 st.button("Exit", on_click=exit_callback)
 
-            st.write("#### Utterance Progress")
-            utt_bar = st.progress(0.0)
-            utt_bar.progress(
-                (st.session_state["utt_counter"])/(len(st.session_state["utt_list"])))
+            st.write("#### Conversation progress")
+            conv_bar = st.progress(0)
+            conv_bar.progress(2*st.session_state["conv_counter"])
 
             if st.session_state["utt_counter"] != 0:
                 st.write(st.session_state["current_conv"].get_utterance(

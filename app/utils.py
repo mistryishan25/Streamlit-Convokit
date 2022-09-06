@@ -1,4 +1,3 @@
-from requests import session
 import streamlit as st
 import pandas as pd
 import convokit
@@ -13,7 +12,7 @@ def update_meta(node, edge, keep_node):
     # update the keep node info
     st.session_state["current_utt"].meta["keep_node"] = keep_node
 
-    # st.write(st.session_state["current_utt"].meta)
+    st.write(st.session_state["current_utt"].meta)
 
     if st.session_state["utt_counter"] == len(st.session_state["utt_list"])-1:
         st.session_state["utt_counter"] = 0
@@ -21,11 +20,68 @@ def update_meta(node, edge, keep_node):
     else:
         st.session_state["utt_counter"] += 1
 
-    pass
+
+def update_meta_sub(subproblem):
+    st.session_state["current_conv"].meta["subproblem"] = subproblem
+
+
+def update_next():
+    if st.session_state["utt_counter"] == len(st.session_state["utt_list"])-1:
+        st.session_state["utt_counter"] = 0
+        st.session_state["conv_counter"] += 1
+    else:
+        st.session_state["utt_counter"] += 1
+
+
+def exit_callback():
+    # chnage the parameter : overwrite_exisiting_corpus to true in the end
+    # st.session_state["user_corpus"].dump(name="test_modified",
+    #                                      base_path="test")
+    st.success("The data has been downloaded. You can close the app now!")
+
+
+def next_data_callback():
+    if st.session_state["utt_counter"] == len(st.session_state["utt_list"])-1:
+        st.session_state["utt_counter"] = 0
+        st.session_state["conv_counter"] += 1
+    else:
+        st.session_state["utt_counter"] += 1
+
+
+def node_box_sub_problem():
+
+    st.write("#### Previous Comment")
+    if st.session_state["utt_counter"] == 0:
+        st.info("This is the first comment on the conversation")
+    else:
+        st.success(st.session_state["current_conv"].get_utterance(
+            st.session_state["utt_list"][st.session_state["utt_counter"]-1]).text)
+
+    st.write("#### Current Comment")
+    st.success(st.session_state["current_utt"].text)
+
+    subproblem = st.selectbox("Select the subproblem", [
+        "Polarization",
+        "Hate Speech",
+        "Condescension",
+        "Ploliteness",
+        "Alignment",
+        "Trolls", "Cannot Decide"], key="subprob_node")
+
+    but1, but2, but3 = st.columns(3)
+    with but1:
+        subproblem_submit = st.button(
+            "Submit", on_click=update_meta_sub, args=[subproblem])
+
+    with but2:
+        st.button("Exit", on_click=exit_callback)
+
+    with but3:
+        st.button("next", on_click=next_data_callback)
 
 
 def node_box_without_form():
-    col1,col2,col3 =st.columns(3)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         st.write("#### Previous Comment")
@@ -35,12 +91,11 @@ def node_box_without_form():
             else:
                 st.success(st.session_state["current_conv"].get_utterance(
                     st.session_state["utt_list"][st.session_state["utt_counter"]-1]).text)
-        
+
     with col2:
         st.write("#### Current Comment")
         with st.expander("Click to expand"):
             st.warning(st.session_state["current_utt"].text)
-
 
     with col3:
         st.write("#### Options")
@@ -161,8 +216,8 @@ def print_resource_section_nodes() -> None:
     """
 
     """
-    st.write('''# Resource section''')
-    with st.expander("Comment types", expanded=True):
+    st.write('''## Resource section - Nodes''')
+    with st.expander("Comment types - i.e. Nodes", expanded=True):
         st.write("### Sentence categories")
         st.write(
             """
@@ -198,7 +253,8 @@ def print_resource_section_nodes() -> None:
 
 
 def print_resource_section_edges():
-    with st.expander("Click to expand the relations between the sentences", expanded=True):
+    st.write('''## Resource section - Edges''')
+    with st.expander("Relation Types - i.e. Edges", expanded=True):
         st.write(
             '''
           #### Asking
@@ -256,6 +312,11 @@ def print_resource_section_edges():
                 - Or defending someone else : "Leave her alone, that was an unecessary personal attack"      
           '''
         )
+
+
+def print_resource_section_problems():
+    st.write('''## Resource section - Sub-Problems''')
+    pass
 
 
 def user_info(main_corpus, user_list_dict):
