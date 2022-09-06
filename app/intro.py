@@ -4,15 +4,13 @@ from pages.node_edge import *
 from time import time
 from convokit import Corpus
 
-## 
-
 
 
 # ----------------------- PAGES --------------------------------
     # ------------------------INTRO-------------------------------
 def intro():
     import streamlit as st
-    st.sidebar.success("Select a demo above.")
+    st.sidebar.success("Select the annotation type")
 
     st.markdown("Annotation guidlines")
     info_page()

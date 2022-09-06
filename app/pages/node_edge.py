@@ -5,7 +5,6 @@ def node_edge_work():
     from convokit import Corpus
     # --------------------- DATA ---------------------------------
 
-
     @st.cache(suppress_st_warning=True, allow_output_mutation=True)
     def load_data(ROOT_DIR):
         start = time()
@@ -49,7 +48,6 @@ def node_edge_work():
     if "progress_utt" not in st.session_state:
         st.session_state["progress_utt"] = 0
 
-
     # ----------VARIABLES---------------------------------
     static_conv_list = st.session_state["user_corpus"].get_conversation_ids()
 
@@ -70,7 +68,6 @@ def node_edge_work():
     def resource_button_callback():
         st.session_state["reader_consent"] = True
 
-
     def inc_conv():
         if st.session_state["conv_counter"] == len(static_conv_list):
             st.balloons()
@@ -83,14 +80,14 @@ def node_edge_work():
                 st.write("### Who would this wizard be?")
                 # change the list here when needed - using the keys to
                 users = ["Ron", "Hermoine", "Neville",
-                        "Harry", "Professor Snape", None]
+                         "Harry", "Professor Snape", None]
                 default_idx = users.index(None)
                 selected_user = st.selectbox(
                     "Reveal yourself", users, index=default_idx)
                 # st.write(default_idx)
                 if selected_user:
                     st.success(str(selected_user) +
-                            " , \n you many now enter the Floo Network")
+                               " , \n you many now enter the Floo Network")
                 user_submit = st.button(
                     "Jump right in", on_click=user_submit_callback, args=(selected_user,))
 
@@ -112,6 +109,6 @@ def node_edge_work():
         conv_bar = st.progress(0)
         conv_bar.progress(2*st.session_state["conv_counter"])
 
-        if st.session_state["utt_counter"] != 0:
-            st.write(st.session_state["current_conv"].get_utterance(
-                st.session_state["utt_list"][st.session_state["utt_counter"]-1]).meta)
+        # if st.session_state["utt_counter"] != 0:
+        #     st.write(st.session_state["current_conv"].get_utterance(
+        #         st.session_state["utt_list"][st.session_state["utt_counter"]-1]).meta)

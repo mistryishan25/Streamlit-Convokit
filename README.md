@@ -7,16 +7,17 @@ This applet is meant to be the prototype platform that works locally for the ann
 ### Usage (First Time) : 
 
 #### Step 1: Create a virtual environment and activate it.
-```bash
-pip install foobar
-```
-
+It is better to have a virtual env set up so that the other versions on your machine don't lead to nasty errors when working with this repo. You can do so using : 
+Option 1 : `Conda` - Follow the steps listed [here](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands)
+Option 2 : `Terminal` - Follow the stpes listed [here](https://realpython.com/intro-to-pyenv/)  
 #### Step 2: Install the dependencies.
-
 ```bash
-pip install foobar
+pip install requirements.txt
 ```
 #### Step 3: Download the working dataset.
+
+Make sure that you download the data in the `data` folder and not elsewhere.
+
 ```
 Sagar Sanskar
 ```

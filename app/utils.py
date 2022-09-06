@@ -12,7 +12,7 @@ def update_meta(node, edge, keep_node):
     # update the keep node info
     st.session_state["current_utt"].meta["keep_node"] = keep_node
 
-    st.write(st.session_state["current_utt"].meta)
+    # st.write(st.session_state["current_utt"].meta)
 
     if st.session_state["utt_counter"] == len(st.session_state["utt_list"])-1:
         st.session_state["utt_counter"] = 0
@@ -85,7 +85,7 @@ def node_box_without_form():
 
     with col1:
         st.write("#### Previous Comment")
-        with st.expander("Click to expand"):
+        with st.expander("Click to expand", expanded=True):
             if st.session_state["utt_counter"] == 0:
                 st.success("This is the first comment on the conversation")
             else:
@@ -94,7 +94,7 @@ def node_box_without_form():
 
     with col2:
         st.write("#### Current Comment")
-        with st.expander("Click to expand"):
+        with st.expander("Click to expand", expanded=True):
             st.warning(st.session_state["current_utt"].text)
 
     with col3:
