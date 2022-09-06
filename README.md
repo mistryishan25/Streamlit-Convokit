@@ -28,7 +28,7 @@ Please be careful in selecting the kind of annotation you would be performing.
 
 1. The `sub_problem` page in the app is dedicated to the sub-problem identification
 2. The `nodes_edge` page in the app is dedicated  to the node and edge identification
-3. The `info` page contains all the guidlines needed for the annotation process
+3. The `info` page contains all the guidlines needed for the annotation process. It is recommned to refer to this tab every once in a while after each conversation so that you get acquainted with the schema quickly.
 #### Step 5: Update your progress in the Gsheet
 
 Color code the ones that are done as "Green" in your specific column for the specific conversation. Link :  Sagar Sanskar
