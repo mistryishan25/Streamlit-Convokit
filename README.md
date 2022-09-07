@@ -9,12 +9,13 @@ This applet is meant to be the prototype platform that works locally for the ann
 #### Step 1: Create a virtual environment and activate it.
 ```bash
 conda create -n <name> python=3.9
+conda activate <name>
 ```
 
 #### Step 2: Install the dependencies.
 
 ```bash
-pip install foobar
+pip install requirements.txt
 ```
 #### Step 3: Download the working dataset.
 ```
