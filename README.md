@@ -18,15 +18,26 @@ conda activate <name>
 pip install requirements.txt
 ```
 #### Step 3: Download the working dataset.
+Please refer to the progress sheet in case you are doing your second round of annotation(sub-problem or nodes/edges).
 ```
 Sagar Sanskar
 ```
 #### Step 4: Run the app.
+
+Give it a little time and then you'll see a selectbox at the left pane in the application prompting you to select an annotation type. Please make sure that you select on the work that is listed in the Gsheet to prevent any confusions later on. Just a safety measure to keep checking the sheet so that none of your work goes waste due to some silly logisitical error.
+
 ```
 streamlit run app/intro.py
 ```
-#### Step 5: Update your progress in the Gsheet
 
+#### Step 5: Update your progress in the Gsheet
+The app will not reload your progress if you leave the app in the middle of a conversation. So it is suggested to wrap up the conversation and only then end the session(close the application). The app will load from the conversation that you were supposed to do next before the break.
+
+Make sure that you click on the exit button and wait for the success message to pop up with ballons on your screen. This suggests that the data has been updated locally. 
+- If you are still left with some portions, don't worry everyone needs a little break! You don't have to do anything else.
+- If you are done with the entire batch then simply upload the data folder in the gdrive[link] using the following naming conventions : TBD
+
+TBD : 
 Color code the ones that are done as "Green" in your specific column for the specific conversation. Link :  Sagar Sanskar
 
 ### Resuming your previous work : 
