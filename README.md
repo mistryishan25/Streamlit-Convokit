@@ -8,7 +8,7 @@ This applet is meant to be the prototype platform that works locally for the ann
 
 #### Step 1: Create a virtual environment and activate it.
 ```bash
-pip install foobar
+conda create -n <name> python=3.9
 ```
 
 #### Step 2: Install the dependencies.
