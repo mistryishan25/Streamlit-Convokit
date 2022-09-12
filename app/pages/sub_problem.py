@@ -1,3 +1,4 @@
+from json import load
 from utils import node_box_sub_problem
 
 def sub_problem_work():
@@ -31,12 +32,13 @@ def sub_problem_work():
 
     if "conv_progress" not in st.session_state:
         # to keep track of which index we are currently working on
-        
-        st.session_state["conv_counter"] = 4
+        with open("status.json", "r") as file:
+            status = load(file)
+            # st.write(type(status["conv_done"]))
+        st.session_state["conv_counter"] = status["conv_done"]
         
         # to update the finsihed conversation ids to some central place as log
         st.session_state["conv_progress"] = []
-
     # current conversation to be stored - The conv object
     if st.session_state["conv_counter"] != len(static_conv_list):
         st.session_state["current_conv"] = st.session_state["user_corpus"].get_conversation(
@@ -75,7 +77,7 @@ def sub_problem_work():
 
 
 # ----------------------------DISPLAY CODE-----------------------------------
-    st.write("#### Utterance Progress")
+    st.write("#### Utterance Progress :\t " + str(st.session_state["utt_counter"])+"/"+ str(len(st.session_state["utt_list"])))
     utt_bar = st.progress(0.0)
     utt_bar.progress(
         (st.session_state["utt_counter"])/(len(st.session_state["utt_list"])))
@@ -85,7 +87,8 @@ def sub_problem_work():
         if st.session_state["utt_counter"] != len(st.session_state["utt_list"]):
             node_box_sub_problem()
 
-        st.write("#### Conversation progress")
+        st.write("#### Conversation progress  : " + "  " +
+                 str((st.session_state["conv_counter"]/len(static_conv_list))*100) + "%")
         conv_bar = st.progress(0)
         conv_bar.progress(2*st.session_state["conv_counter"])
 
