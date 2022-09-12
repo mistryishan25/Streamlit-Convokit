@@ -2,8 +2,10 @@
 __pycache__
 test.py
 rough.py
-# data/
+data/ 
 test/
 user-select.py
-flow.txt
+# flow.txt
 sample_flow.py
+data/speakers.json
+data/utterances.jsonl

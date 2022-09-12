@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import convokit
 from convokit import Corpus
+import json
 
 
 def update_meta(node, edge, keep_node):
@@ -19,6 +20,7 @@ def update_meta(node, edge, keep_node):
         st.session_state["conv_counter"] += 1
     else:
         st.session_state["utt_counter"] += 1
+        
 
 
 def update_meta_sub(subproblem):
@@ -34,11 +36,16 @@ def update_next():
 
 
 def exit_callback():
+    status_dict = {}
     # chnage the parameter : overwrite_exisiting_corpus to true in the end
-    # st.session_state["user_corpus"].dump(name="test_modified",
-    #                                      base_path="test")
-    st.success("The data has been downloaded. You can close the app now!")
-
+    if st.session_state["user_corpus"].dump(name="data",overwrite_existing_corpus=True):
+        st.success("The data has been downloaded. You can close the app now!")
+    status_dict["conv_done"] = st.session_state["conv_counter"]
+    status_dict["test"] = st.session_state["utt_counter"]
+    json_object = json.dumps(status_dict)
+    with open("status.json", "w") as file:
+        file.write(json_object)
+    st.success("Added to file")
 
 def next_data_callback():
     if st.session_state["utt_counter"] == len(st.session_state["utt_list"])-1:
@@ -81,7 +88,7 @@ def node_box_sub_problem():
 
 
 def node_box_without_form():
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
 
     with col1:
         st.write("#### Previous Comment")
@@ -97,45 +104,52 @@ def node_box_without_form():
         with st.expander("Click to expand", expanded=True):
             st.warning(st.session_state["current_utt"].text)
 
-    with col3:
-        st.write("#### Options")
-        node = st.selectbox("What do you think is the current comment type? ", ['Agreement',
-                                                                                'Announcement',
-                                                                                'Answer',
-                                                                                'Appreciation',
-                                                                                'Disagreement',
-                                                                                'Elaboration',
-                                                                                'Humour',
-                                                                                'Negative Reaction',
-                                                                                'Question',
-                                                                                'Other',
-                                                                                None], key="Node_1",)
 
-        if st.session_state["utt_counter"] != 0:
-            st.write("#### Relation b/w them")
-            edge = st.selectbox("What kind of realtionship exists between these sentenes", ['Asking',
-                                                                                            'Informing',
-                                                                                            'Asserting',
-                                                                                            'Proposing',
-                                                                                            'Summarizing',
-                                                                                            'Checking',
-                                                                                            'Building',
-                                                                                            'Including',
-                                                                                            'Excluding',
-                                                                                            'Self-promotion',
-                                                                                            'Supporting',
-                                                                                            'Disagreeing',
-                                                                                            'Avoiding',
-                                                                                            'Challenging',
-                                                                                            'Attacking',
-                                                                                            'Defending',
-                                                                                            None], key="Edge_1 ")
-        else:
-            edge = None
-        keep_node = st.checkbox('Should we exclude this one?', key="Keep_node")
+    st.write("#### Options")
+    node = st.selectbox("What do you think is the current comment type? ", ['Agreement',
+                                                                            'Announcement',
+                                                                            'Answer',
+                                                                            'Appreciation',
+                                                                            'Disagreement',
+                                                                            'Elaboration',
+                                                                            'Humour',
+                                                                            'Negative Reaction',
+                                                                            'Question',
+                                                                            'Other',
+                                                                            None], key="Node_1",)
 
+    if st.session_state["utt_counter"] != 0:
+        st.write("#### Relation b/w them")
+        edge = st.selectbox("What kind of realtionship exists between these sentenes", ['Asking',
+                                                                                        'Informing',
+                                                                                        'Asserting',
+                                                                                        'Proposing',
+                                                                                        'Summarizing',
+                                                                                        'Checking',
+                                                                                        'Building',
+                                                                                        'Including',
+                                                                                        'Excluding',
+                                                                                        'Self-promotion',
+                                                                                        'Supporting',
+                                                                                        'Disagreeing',
+                                                                                        'Avoiding',
+                                                                                        'Challenging',
+                                                                                        'Attacking',
+                                                                                        'Defending',
+                                                                                        None], key="Edge_1 ")
+    else:
+        edge = None
+    keep_node = st.checkbox('Should we exclude this one?', key="Keep_node")
+
+    but_1,_,_,_,_,_,_,_,but_9 = st.columns(9)
+    with but_1:
         submit_box = st.button("Submit", on_click=update_meta, args=[
-                               node, edge, keep_node])
+                            node, edge, keep_node])
+    
+    with but_9:
+        # download button
+        st.button("Exit", on_click=exit_callback)
+
 
 
 def display_node_box(utt):

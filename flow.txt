@@ -1,0 +1,42 @@
+Session State variables:
+
+    user_corpus : corpus object    
+    conv_list_before : list - one time initialization
+    conv_list_after : list - []
+    conv_count : len(conv_list_after)   
+
+    utt_count : done so far
+    utt_list :  iteration
+
+for i, id in enumerate(conv_list_before) :
+    Show the conversation title :
+        - Should stay until the conversation changes
+        - Also show the progress bar
+
+    for each conversation
+        Previous node title:
+            - if the first time then this would be empty
+            - use the .reply_to() function
+
+        Node 2 : 
+            - stays here until the end of the conversation
+            - title 
+            - * Select box *
+            - cleaning question
+            - submit
+                when pressd edge box should appear
+
+        Edge : 
+            - stays here until the end of the conversation.
+            - if first utterance( reply to is None or is conv.id) then utt.meta=None
+
+        Next utterance button:
+
+    Next converation button 
+
+    
+    indicate the chnage in the the conv counter:
+    pop from the conv_list_before
+    push to the conv_list_after 
+
+

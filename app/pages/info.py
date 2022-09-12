@@ -4,6 +4,8 @@ def info_page():
     from utils import print_resource_section_edges, print_resource_section_nodes, print_resource_section_problems
 
 
+
+
     tab1, tab2, tab3 = st.tabs(["Information_nodes", "Information_edges", "Information_sub_probolems"])
 
     with tab1:

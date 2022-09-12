@@ -1,10 +1,14 @@
 from utils import node_box_sub_problem
 
 def sub_problem_work():
-    import streamlit as st
-    from convokit import Corpus
+    import os
     from time import time
+    
+    import streamlit as st
+    import json
+    from convokit import Corpus
     from utils import node_box_without_form
+
 
     # --------------------- DATA ---------------------------------
 
@@ -27,8 +31,9 @@ def sub_problem_work():
 
     if "conv_progress" not in st.session_state:
         # to keep track of which index we are currently working on
+        
         st.session_state["conv_counter"] = 4
-
+        
         # to update the finsihed conversation ids to some central place as log
         st.session_state["conv_progress"] = []
 
@@ -50,15 +55,10 @@ def sub_problem_work():
 
     if "progress_utt" not in st.session_state:
         st.session_state["progress_utt"] = 0
+    
 
     # -----------CALLBACKS---------------
-
-    def exit_callback():
-        # chnage the parameter : overwrite_exisiting_corpus to true in the end
-        # st.session_state["user_corpus"].dump(name="test_modified",
-        #                                      base_path="test")
-        st.success("The data has been downloaded. You can close the app now!")
-
+ 
     def user_submit_callback(selected_user):
         st.session_state["current_user"] = selected_user
         if st.session_state["current_user"] != None:
@@ -71,6 +71,7 @@ def sub_problem_work():
         else:
             st.session_state["conv_counter"] += 1
             st.write("Conv_counter", st.session_state["conv_counter"])
+        
 
 
 # ----------------------------DISPLAY CODE-----------------------------------
@@ -90,3 +91,9 @@ def sub_problem_work():
 
         if st.session_state["utt_counter"] != 0:
             st.write(st.session_state["current_conv"].meta)
+    
+
+
+    # -----------------------COOKIES--------------------------------
+
+
