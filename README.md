@@ -16,7 +16,7 @@ pip install requirements.txt
 ```
 #### Step 3: Download the working dataset.
 
-Make sure that you download the data in the `data` folder and not elsewhere.
+Please delete all the sample data from the data folder first before downloading the new data.Make sure that you download the data in the `data` folder and not elsewhere.
 
 ```
 Sagar Sanskar
